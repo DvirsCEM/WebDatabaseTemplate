@@ -107,9 +107,13 @@ public class Server
         return new Request(_context, path);
       }
 
+      if (path == "favicon.ico")
+      {
+        path = "website/favicon.ico";
+      }
+
       if (!File.Exists(path))
       {
-
         _context.Response.StatusCode = 404;
         if (_context.Request.AcceptTypes?.Contains("text/html") ?? false)
         {
