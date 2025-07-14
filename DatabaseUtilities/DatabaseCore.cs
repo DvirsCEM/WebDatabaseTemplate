@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Project.DatabaseUtilities;
 
+// 
 // Summary:
 // Represents the core database context for the application.
 // This class provides tools to manage the database schema.
@@ -14,6 +15,7 @@ public class DatabaseCore : DbContext
 {
   readonly string _name;
 
+  //
   // Summary:
   // Gets a value indicating whether the database was newly created.
   // // Returns:
