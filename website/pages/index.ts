@@ -21,7 +21,6 @@ for (var i = 0; i < products.length; i++) {
 addButton.onclick = async () => {
   var name = nameInput.value;
   var price = Number(priceInput.value);
-  console.log(name, price);
   await send("addProduct", [name, price]);
   location.reload();
 };
