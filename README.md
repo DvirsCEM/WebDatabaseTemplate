@@ -1,6 +1,6 @@
 ## תנאים מוקדמים
+- התקינו את [Git](https://git-scm.com/downloads/win)
 - התקינו את [NET Framework.](https://dotnet.microsoft.com/en-us/download)
-- התקינו את [git](https://git-scm.com/downloads/win)
 - התקינו את [VS Code](https://code.visualstudio.com/download)
   - התקינו את ההרחבה [#C](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
   - התקינו את ההרחבה [SQLite Viewer](https://marketplace.visualstudio.com/items?itemName=qwtel.sqlite-viewer)
