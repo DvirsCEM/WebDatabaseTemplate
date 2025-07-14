@@ -1,4 +1,4 @@
-import { send } from "../utilities";
+import { send } from "../clientUtilities";
 import { Product } from "./types";
 
 var addButton = document.querySelector("#addButton") as HTMLButtonElement;
