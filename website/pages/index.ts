@@ -1,5 +1,5 @@
 import { send } from "../clientUtilities";
-import { Product } from "./types";
+import { Product } from "../types";
 
 var addButton = document.querySelector("#addButton") as HTMLButtonElement;
 var nameInput = document.querySelector("#nameInput") as HTMLInputElement;
