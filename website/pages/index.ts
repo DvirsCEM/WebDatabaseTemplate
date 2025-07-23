@@ -1,26 +1,5 @@
-import { send } from "../clientUtilities";
-import { Product } from "./types";
+import { createBanner } from "../components/banner";
 
-var addButton = document.querySelector("#addButton") as HTMLButtonElement;
-var nameInput = document.querySelector("#nameInput") as HTMLInputElement;
-var priceInput = document.querySelector("#priceInput") as HTMLInputElement;
-var productsDiv = document.querySelector("#productsDiv") as HTMLUListElement;
+var bannerDiv = document.querySelector<HTMLDivElement>("#bannerDiv")!;
 
-var products = await send("getProducts") as Product[];
-
-for (var i = 0; i < products.length; i++) {
-  var product = products[i];
-
-  var productLi = document.createElement("li");
-  productLi.innerText = product.price + "₪ - " + product.name;
-
-  productsDiv.appendChild(productLi);
-}
-
-
-addButton.onclick = async () => {
-  var name = nameInput.value;
-  var price = Number(priceInput.value);
-  await send("addProduct", [name, price]);
-  location.reload();
-};
+bannerDiv.appendChild(createBanner());

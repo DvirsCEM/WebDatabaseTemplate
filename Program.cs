@@ -2,6 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Project.DatabaseUtilities;
+using Project.LoggingUtilities;
+using Project.ServerUtilities;
 
 class Program
 {
@@ -27,19 +30,26 @@ class Program
         /*──────────────────────────────────╮
         │ Handle your custome requests here │
         ╰──────────────────────────────────*/
-        if (request.Name == "addProduct")
+        if (request.Name == "signUp")
         {
-          var (name, price) = request.GetParams<(string, double)>();
-
-          var newProduct = new Product(name, price);
-
-          database.Products.Add(newProduct);
-
-          database.SaveChanges();
+          var (username, password) = request.GetParams<(string, string)>();
+          var exists = database.Users.Any(u => u.Username == username);
+          if (!exists)
+          {
+            var userId = Guid.NewGuid().ToString();
+            var user = new User(userId, username, password);
+            database.Users.Add(user);
+            database.SaveChanges();
+            request.Respond(userId);
+          }
         }
-        else if (request.Name == "getProducts")
+        else if (request.Name == "logIn")
         {
-          request.Respond(database.Products.ToArray());
+        }
+        else if (request.Name == "validateUserId")
+        {
+          var userId = request.GetParams<string>();
+          request.Respond(database.Users.Any(u => u.Id == userId));
         }
         else
         {
@@ -56,7 +66,7 @@ class Program
 }
 
 
-class Database() : DbBase("database")
+class Database() : DatabaseCore("database")
 {
   /*──────────────────────────────╮
   │ Add your database tables here │
