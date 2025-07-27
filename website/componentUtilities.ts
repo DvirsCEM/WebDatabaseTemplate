@@ -12,19 +12,19 @@ export function create<
   props: Partial<HTMLElementTagNameMap[K]> | null = null,
   children: (HTMLElement | string)[] | null = null,
 ): HTMLElementTagNameMap[K] {
-  const el = document.createElement(tagName) as HTMLElementTagNameMap[K];
+  const element = document.createElement(tagName) as HTMLElementTagNameMap[K];
 
   if (props) {
-    Object.assign(el, props);
+    Object.assign(element, props);
   }
 
   if (children) {
     for (const child of children) {
-      el.append(child);
+      element.append(child);
     }
   }
 
-  return el;
+  return element;
 }
 
 /**
