@@ -1,9 +1,5 @@
 import { send } from "../clientUtilities";
-
-type Item = {
-  name: string;
-  price: number;
-};
+import { Item } from "../types";
 
 var nameInput = document.querySelector<HTMLInputElement>("#nameInput")!;
 var priceInput = document.querySelector<HTMLInputElement>("#priceInput")!;
