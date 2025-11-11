@@ -30,20 +30,57 @@ export function create<
 /**
  * Applies a CSS style to an HTML element by fetching the CSS from a given path.
  * @param cssPath - The path to the CSS file to be applied.
- * @param element - The HTML element to which the CSS will be applied.
+ * @param elements - The HTML elements to which the CSS will be applied.
  * @returns A wrapper element containing the styled element.
  */
-export function style(cssPath: string, element: HTMLElement): HTMLElement {
+const cssTextCache = new Map<string, string>();
+const cssFetchCache = new Map<string, Promise<string>>();
+
+function loadCss(cssPath: string): Promise<string> {
+  if (cssTextCache.has(cssPath)) {
+    return Promise.resolve(cssTextCache.get(cssPath) as string);
+  }
+
+  if (cssFetchCache.has(cssPath)) {
+    return cssFetchCache.get(cssPath) as Promise<string>;
+  }
+
+  const fetchPromise = fetch(cssPath)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Failed to load CSS from ${cssPath}: ${response.status}`,
+        );
+      }
+      return response.text();
+    })
+    .then((cssText) => {
+      cssTextCache.set(cssPath, cssText);
+      cssFetchCache.delete(cssPath);
+      return cssText;
+    })
+    .catch((error) => {
+      cssFetchCache.delete(cssPath);
+      throw error;
+    });
+
+  cssFetchCache.set(cssPath, fetchPromise);
+  return fetchPromise;
+}
+
+export function style(
+  cssPath: string,
+  ...elements: HTMLElement[]
+): HTMLElement {
   const wrapper = document.createElement("div");
   wrapper.style.display = "none";
   const shadow = wrapper.attachShadow({ mode: "open" });
 
-  fetch(cssPath)
-    .then((response) => response.text())
+  loadCss(cssPath)
     .then((cssText) => {
       shadow.prepend(create("style", { textContent: cssText }));
       wrapper.style.display = "block";
     });
-  shadow.appendChild(element);
+  shadow.append(...elements);
   return wrapper;
 }
