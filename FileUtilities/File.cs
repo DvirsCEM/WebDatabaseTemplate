@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Project.GeneralUtilities;
+namespace Project.FileUtilities;
 
 public static class File
 {
