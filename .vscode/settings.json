@@ -2,6 +2,7 @@
   "files.exclude": {
     ".vscode": true,
     "DatabaseUtilities": true,
+    "FileUtilities": true,
     "LoggingUtilities": true,
     "ServerUtilities": true,
     "website/clientUtilities.ts": true,
