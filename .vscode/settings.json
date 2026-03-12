@@ -12,7 +12,7 @@
     "README.md": true,
     "tsconfig.json": true,
     "**/*.js": true,
-    "bin": true,
-    "obj": true
+    // "bin": true,
+    // "obj": true
   }
 }
