@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Project.DatabaseUtilities;
 using Project.LoggingUtilities;
@@ -13,11 +11,11 @@ class Program
     int port = 5000;
 
     var server = new Server(port);
+    var database = new Database();
 
     Console.WriteLine("The server is running");
-    Console.WriteLine($"Main Page: http://localhost:{port}/website/pages/index.html");
-
-    var database = new Database();
+    Console.WriteLine($"Local  : http://localhost:{port}/website/pages/index.html");
+    Console.WriteLine($"Network: http://{Network.GetLocalNetworkIPAddress()}:{port}/website/pages/index.html");
 
     while (true)
     {
@@ -27,25 +25,16 @@ class Program
 
       try
       {
-        /*──────────────────────────────────╮
-        │ Handle your custome requests here │
-        ╰──────────────────────────────────*/
         if (request.Name == "getItems")
         {
-          var Items = database.Items.ToList();
-          request.Respond(Items);
+          request.Respond(database.Items);
         }
         else if (request.Name == "addItem")
         {
-          var (name, price) = request.GetParams<(string, double)>();
-          var Item = new Item(name, price);
-          database.Items.Add(Item);
+          var (name, amount) = request.GetParams<(string, int)>();
+          var item = new Item(name, amount);
+          database.Items.Add(item);
           database.SaveChanges();
-          request.Respond(Item.Id);
-        }
-        else
-        {
-          request.SetStatusCode(400);
         }
       }
       catch (Exception exception)
@@ -60,15 +49,12 @@ class Program
 
 class Database() : DatabaseCore("database")
 {
-  /*──────────────────────────────╮
-  │ Add your database tables here │
-  ╰──────────────────────────────*/
   public DbSet<Item> Items { get; set; } = default!;
 }
 
-class Item(string name, double price)
+class Item(string name, double amount)
 {
-  [Key] public int Id { get; set; } = default!;
+  public int Id { get; set; } = default!;
   public string Name { get; set; } = name;
-  public double Price { get; set; } = price;
+  public double Amount { get; set; } = amount;
 }

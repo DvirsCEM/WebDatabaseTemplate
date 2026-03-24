@@ -14,5 +14,6 @@
     "**/*.js": true,
     // "bin": true,
     // "obj": true
-  }
+  },
+  "js/ts.preferences.importModuleSpecifier": "non-relative",
 }

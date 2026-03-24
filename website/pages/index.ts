@@ -1,20 +1,20 @@
-import { send } from "../clientUtilities";
-import { Item } from "../types";
+import type { Item } from "types";
+import { send } from "clientUtilities";
 
-var nameInput = document.querySelector<HTMLInputElement>("#nameInput")!;
-var priceInput = document.querySelector<HTMLInputElement>("#priceInput")!;
+var itemInput = document.querySelector<HTMLInputElement>("#itemInput")!;
+var amountInput = document.querySelector<HTMLInputElement>("#amountInput")!;
 var addButton = document.querySelector<HTMLButtonElement>("#addButton")!;
-var itemsList = document.querySelector<HTMLUListElement>("#itemsList")!;
+var itemsUl = document.querySelector<HTMLUListElement>("#itemsUl")!;
 
 var items = await send<Item[]>("getItems");
 
-for (var item of items) {
-  var li = document.createElement("li");
-  li.textContent = `${item.name} - ₪${item.price}`;
-  itemsList.append(li);
-};
+for (var i = 0; i < items.length; i++) {
+  var itemLi = document.createElement("li");
+  itemLi.innerText = `${items[i].amount} ${items[i].name}`;
+  itemsUl.append(itemLi);
+}
 
-addButton.onclick = async () => {
-  await send("addItem", nameInput.value, parseFloat(priceInput.value));
+addButton.onclick = async function() {
+  await send("addItem", itemInput.value, parseInt(amountInput.value));
   location.reload();
 };
