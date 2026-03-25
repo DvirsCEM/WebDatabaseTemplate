@@ -113,7 +113,7 @@ public class Server
       return "website/favicon.ico";
     }
 
-    if (requestType != "custom" &&
+    if (SupportsJavaScriptFallback(requestType) &&
       !Path.HasExtension(path) &&
       File.Exists($"{path}.js"))
     {
@@ -121,6 +121,17 @@ public class Server
     }
 
     return path;
+  }
+
+  static bool SupportsJavaScriptFallback(string requestType)
+  {
+    return requestType is
+      "script" or
+      "worker" or
+      "sharedworker" or
+      "serviceworker" or
+      "audioworklet" or
+      "paintworklet";
   }
 
   static string GetContentType(string path)
